@@ -1,4 +1,4 @@
-name := "iFlavours assignment"
+name := "iF assignment"
 
 version := "1.0-SNAPSHOT"
 
