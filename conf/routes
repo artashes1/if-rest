@@ -7,3 +7,5 @@ POST    /api/v1/users                controllers.UserController.create
 
 GET     /api/v1/users/:id            controllers.UserController.find(id)
 PUT     /api/v1/users/:id            controllers.UserController.update(id)
+
+GET     /*file                       controllers.Assets.at(path="/public", file)
