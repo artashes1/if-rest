@@ -1,4 +1,4 @@
-package controllers;
+package handlers;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;

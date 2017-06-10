@@ -5,12 +5,12 @@ import com.google.code.morphia.annotations.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity("roles")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "description")
 public class Role {
 	@Id
 	String id;

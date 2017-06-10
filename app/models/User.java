@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
@@ -12,13 +13,16 @@ import org.bson.types.ObjectId;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import utils.PasswordValidator.Password;
 import play.data.validation.Constraints.Email;
+import play.data.validation.Constraints.MinLength;
+import play.data.validation.Constraints.Pattern;
 import play.data.validation.Constraints.Required;
 import utils.ObjectIdSerializer;
 
 @Entity("users")
 @Data
-@EqualsAndHashCode(exclude = {"password"})
+@EqualsAndHashCode(exclude = { "password" })
 public class User {
 	@Id
 	@Nullable
@@ -26,31 +30,39 @@ public class User {
 	private ObjectId id;
 
 	@Required
+	@MinLength(3)
 	private String userName;
 
-	//	@Required
+	@Password
 	private String password;
 
-	//	@Required
+	@Required
+	@Pattern(value = "^[a-zA-Z]*$", message = "This field should contains only characters")
 	private String firstName;
 
-//	@Required
+	@Required
+	@Pattern(value = "^[a-zA-Z]*$", message = "This field should contains only characters")
 	private String lastName;
 
+	@Required
 	@Email
 	private String emailAddress;
 
-//	@Required
+	@Required
 	private String streetName;
 
-//	@Required
+	@Required
 	private Integer houseNumber;
 
-//	@Required
+	@Required
+	@Pattern(value = "^[a-zA-Z]*$", message = "This field should contains only characters")
 	private String city;
 
 	@play.data.format.Formats.DateTime(pattern = "yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@Required
 	private Date birthDate;
 
+	@Required
 	private String[] roles;
 }
