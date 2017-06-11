@@ -13,12 +13,12 @@ import org.bson.types.ObjectId;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import utils.PasswordValidator.Password;
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.MinLength;
 import play.data.validation.Constraints.Pattern;
 import play.data.validation.Constraints.Required;
 import utils.ObjectIdSerializer;
+import utils.PasswordValidator.Password;
 
 @Entity("users")
 @Data
@@ -59,7 +59,8 @@ public class User {
 	private String city;
 
 	@play.data.format.Formats.DateTime(pattern = "yyyy-MM-dd")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	// TODO timezone should not be here, but without it there is a bug when updating user
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "CET")
 	@Required
 	private Date birthDate;
 
