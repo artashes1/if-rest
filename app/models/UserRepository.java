@@ -20,21 +20,6 @@ public interface UserRepository {
 	List<User> findAll();
 
 	/**
-	 * Creates new user
-	 *
-	 * @return created user
-	 */
-	User add(User user);
-
-	/**
-	 * Updates existing user
-	 *
-	 * @return updated user or null if user with specified id not found
-	 */
-	@Nullable
-	User update(User user);
-
-	/**
 	 * Finds user by Id
 	 *
 	 * @return user or null if user with specified id not found
@@ -43,10 +28,16 @@ public interface UserRepository {
 	User find(ObjectId id);
 
 	/**
+	 * Stores (saves) user
+	 *
+	 * @return Id of created user
+	 */
+	ObjectId store(User user);
+
+	/**
 	 * Delete user by Id
 	 *
-	 * @return deleted user or null if user with specified id not found
+	 * @return true if deleted
 	 */
-	@Nullable
-	User delete(ObjectId id);
+	boolean delete(ObjectId id);
 }

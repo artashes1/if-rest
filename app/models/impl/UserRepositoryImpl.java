@@ -50,38 +50,20 @@ public class UserRepositoryImpl extends BasicDAO<User, ObjectId> implements User
 		return this.find().asList().stream().map(cleanPassword).collect(Collectors.toList());
 	}
 
-	@Override
-	public User add(final User user) {
-		return get(saveUser(user));
-	}
-
-	@Nullable
-	@Override
-	public User update(final User user) {
-		if (get(user.getId()) != null) {
-			return find(saveUser(user));
-		}
-		return null;
-	}
-
 	@Nullable
 	@Override
 	public User find(final ObjectId id) {
 		return cleanPassword.apply(get(id));
 	}
 
-	@Nullable
 	@Override
-	public User delete(final ObjectId id) {
-		final User user = find(id);
-		if (user != null) {
-			deleteById(id);
-		}
-		return user;
-	}
-
-	private ObjectId saveUser(final User user) {
+	public ObjectId store(final User user) {
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		return (ObjectId) save(user).getId();
+	}
+
+	@Override
+	public boolean delete(final ObjectId id) {
+		return deleteById(id).getN() > 0;
 	}
 }

@@ -12,7 +12,6 @@ import org.bson.types.ObjectId;
 
 import models.User;
 import models.UserRepository;
-import play.libs.concurrent.HttpExecutionContext;
 
 /**
  * Handles presentation of User, which map to JSON.
@@ -20,27 +19,33 @@ import play.libs.concurrent.HttpExecutionContext;
 public class UserHandler {
 
 	private final UserRepository userRepository;
-	private final HttpExecutionContext ec;
 
 	@Inject
-	public UserHandler(final UserRepository userRepository, final HttpExecutionContext ec) {
+	public UserHandler(final UserRepository userRepository) {
 		this.userRepository = userRepository;
-		this.ec = ec;
 	}
 
 	public CompletionStage<List<User>> findAll() {
-		return supplyAsync(userRepository::findAll, ec.current());
+		return supplyAsync(userRepository::findAll);
 	}
 
 	public CompletionStage<User> create(final User user) {
-		return supplyAsync(() -> userRepository.add(user), ec.current());
+		return supplyAsync(() -> userRepository.store(user))
+			.thenComposeAsync(id -> supplyAsync(() -> userRepository.find(id)));
 	}
 
 	public CompletionStage<Optional<User>> find(final ObjectId id) {
-		return supplyAsync(() -> Optional.ofNullable(userRepository.find(id)), ec.current());
+		return supplyAsync(() -> Optional.ofNullable(userRepository.find(id)));
 	}
 
-	public CompletionStage<Optional<User>> update(final ObjectId id, final User user) {
-		return supplyAsync(() -> Optional.ofNullable(userRepository.update(user)), ec.current());
+	public CompletionStage<Optional<User>> update(final User user) {
+		return supplyAsync(() -> userRepository.find(user.getId()))
+			.thenComposeAsync(u -> {
+				if (u == null) {
+					return supplyAsync(Optional::<User>empty);
+				} else {
+					return supplyAsync(() -> userRepository.store(user)).thenComposeAsync(this::find);
+				}
+			});
 	}
 }

@@ -17,15 +17,13 @@ import play.libs.concurrent.HttpExecutionContext;
 public class RoleHandler {
 
 	private final RoleRepository roleRepository;
-	private final HttpExecutionContext ec;
 
 	@Inject
-	public RoleHandler(final RoleRepository roleRepository, final HttpExecutionContext ec) {
+	public RoleHandler(final RoleRepository roleRepository) {
 		this.roleRepository = roleRepository;
-		this.ec = ec;
 	}
 
 	public CompletionStage<List<Role>> findAll() {
-		return supplyAsync(roleRepository::findAll, ec.current());
+		return supplyAsync(roleRepository::findAll);
 	}
 }
