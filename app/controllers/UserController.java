@@ -3,6 +3,7 @@ package controllers;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 import javax.inject.Inject;
@@ -44,11 +45,11 @@ public class UserController extends Controller {
 	public CompletionStage<Result> create() {
 		final Form<User> form = formFactory.form(User.class).bindFromRequest();
 		if (form.hasErrors()) {
-			return supplyAsync(form::errorsAsJson, ec.current()).thenApplyAsync(Results::badRequest);
+			return badRequestAsync(form);
 		}
 		if (form.get().getId() != null) {
 			form.errors().put("id", Collections.singletonList(new ValidationError("mismatch", "Id of object shuold not be specified")));
-			return supplyAsync(form::errorsAsJson, ec.current()).thenApplyAsync(Results::badRequest);
+			return badRequestAsync(form);
 		}
 		return handler.create(form.get())
 			.thenApplyAsync(savedUser -> created(Json.toJson(savedUser)), ec.current());
@@ -65,15 +66,19 @@ public class UserController extends Controller {
 		final ObjectId objectId = new ObjectId(id);
 		final Form<User> form = formFactory.form(User.class).bindFromRequest();
 		if (form.hasErrors()) {
-			return supplyAsync(form::errorsAsJson, ec.current()).thenApplyAsync(Results::badRequest);
+			return badRequestAsync(form);
 		}
 		if (!objectId.equals(form.get().getId())) {
 			form.errors().put("id", Collections.singletonList(new ValidationError("mismatch", "Id of object does mismatch URL path")));
-			return supplyAsync(form::errorsAsJson, ec.current()).thenApplyAsync(Results::badRequest);
+			return badRequestAsync(form);
 		}
-		return handler.update(new ObjectId(id), form.get()).thenApplyAsync(
+		return handler.update(form.get()).thenApplyAsync(
 			optionalUser -> optionalUser.map(r -> ok(Json.toJson(r)))
 				.orElseGet(Results::notFound), ec.current()
 		);
+	}
+
+	private CompletableFuture<Result> badRequestAsync(final Form<User> form) {
+		return supplyAsync(form::errorsAsJson, ec.current()).thenApplyAsync(Results::badRequest);
 	}
 }
