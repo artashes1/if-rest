@@ -29,7 +29,9 @@ public class UserRepositoryImpl extends BasicDAO<User, ObjectId> implements User
 	private static final Config config = ConfigFactory.load();
 
 	private Function<User, User> cleanPassword = u -> {
-		u.setPassword(null);
+		if (u != null) {
+			u.setPassword(null);
+		}
 		return u;
 	};
 
@@ -66,6 +68,16 @@ public class UserRepositoryImpl extends BasicDAO<User, ObjectId> implements User
 	@Override
 	public User find(final ObjectId id) {
 		return cleanPassword.apply(get(id));
+	}
+
+	@Nullable
+	@Override
+	public User delete(final ObjectId id) {
+		final User user = find(id);
+		if (user != null) {
+			deleteById(id);
+		}
+		return user;
 	}
 
 	private ObjectId saveUser(final User user) {

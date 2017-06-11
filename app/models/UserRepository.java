@@ -41,4 +41,12 @@ public interface UserRepository {
 	 */
 	@Nullable
 	User find(ObjectId id);
+
+	/**
+	 * Delete user by Id
+	 *
+	 * @return deleted user or null if user with specified id not found
+	 */
+	@Nullable
+	User delete(ObjectId id);
 }
