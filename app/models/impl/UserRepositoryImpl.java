@@ -18,14 +18,14 @@ import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
 
 import models.User;
-import models.UserDAO;
+import models.UserRepository;
 
 /**
- * Implementation of UserDAO
+ * Implementation of UserRepository
  *
  * @author Artashes Balyan.
  */
-public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
+public class UserRepositoryImpl extends BasicDAO<User, ObjectId> implements UserRepository {
 	private static final Config config = ConfigFactory.load();
 
 	private Function<User, User> cleanPassword = u -> {
@@ -35,7 +35,7 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
 
 	@Singleton
 	@Inject
-	public UserDAOImpl(final Morphia morphia) {
+	public UserRepositoryImpl(final Morphia morphia) {
 		super(
 			new MongoClient(config.getString("mongodb.host"), config.getInt("mongodb.port")),
 			morphia,

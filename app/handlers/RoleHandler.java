@@ -8,7 +8,7 @@ import java.util.concurrent.CompletionStage;
 import javax.inject.Inject;
 
 import models.Role;
-import models.RoleDAO;
+import models.RoleRepository;
 import play.libs.concurrent.HttpExecutionContext;
 
 /**
@@ -16,16 +16,16 @@ import play.libs.concurrent.HttpExecutionContext;
  */
 public class RoleHandler {
 
-	private final RoleDAO roleDAO;
+	private final RoleRepository roleRepository;
 	private final HttpExecutionContext ec;
 
 	@Inject
-	public RoleHandler(final RoleDAO roleDAO, final HttpExecutionContext ec) {
-		this.roleDAO = roleDAO;
+	public RoleHandler(final RoleRepository roleRepository, final HttpExecutionContext ec) {
+		this.roleRepository = roleRepository;
 		this.ec = ec;
 	}
 
 	public CompletionStage<List<Role>> findAll() {
-		return supplyAsync(roleDAO::findAll, ec.current());
+		return supplyAsync(roleRepository::findAll, ec.current());
 	}
 }

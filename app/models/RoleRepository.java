@@ -6,7 +6,7 @@ import java.util.List;
  * Data access object to manage role's storage
  * @author Artashes Balyan.
  */
-public interface RoleDAO {
+public interface RoleRepository {
 	/**
 	 * Find all roles
 	 * @return list of all users

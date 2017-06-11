@@ -11,7 +11,7 @@ import org.bson.types.ObjectId;
  *
  * @author Artashes Balyan.
  */
-public interface UserDAO {
+public interface UserRepository {
 	/**
 	 * Find all users
 	 *

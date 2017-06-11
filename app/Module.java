@@ -1,9 +1,9 @@
 import com.google.inject.AbstractModule;
 
-import models.RoleDAO;
-import models.UserDAO;
-import models.impl.RoleDAOImpl;
-import models.impl.UserDAOImpl;
+import models.RoleRepository;
+import models.UserRepository;
+import models.impl.RoleRepositoryImpl;
+import models.impl.UserRepositoryImpl;
 
 /**
  * This class is a Guice module that tells Guice how to bind several different types.
@@ -11,8 +11,8 @@ import models.impl.UserDAOImpl;
 public class Module extends AbstractModule {
     @Override
     public void configure() {
-        bind(UserDAO.class).to(UserDAOImpl.class).asEagerSingleton();
-        bind(RoleDAO.class).to(RoleDAOImpl.class).asEagerSingleton();
+        bind(UserRepository.class).to(UserRepositoryImpl.class).asEagerSingleton();
+        bind(RoleRepository.class).to(RoleRepositoryImpl.class).asEagerSingleton();
     }
 }
 

@@ -13,18 +13,18 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import models.Role;
-import models.RoleDAO;
+import models.RoleRepository;
 
 /**
- * Implementation of RoleDAO
+ * Implementation of RoleRepository
  * @author Artashes Balyan.
  */
-public class RoleDAOImpl extends BasicDAO<Role, String> implements RoleDAO {
+public class RoleRepositoryImpl extends BasicDAO<Role, String> implements RoleRepository {
 	private static final Config config = ConfigFactory.load();
 
 	@Singleton
 	@Inject
-	public RoleDAOImpl(final Morphia morphia) {
+	public RoleRepositoryImpl(final Morphia morphia) {
 		super(
 			new MongoClient(config.getString("mongodb.host"), config.getInt("mongodb.port")),
 			morphia,
