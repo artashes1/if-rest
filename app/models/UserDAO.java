@@ -14,18 +14,21 @@ import org.bson.types.ObjectId;
 public interface UserDAO {
 	/**
 	 * Find all users
+	 *
 	 * @return list of all users
 	 */
 	List<User> findAll();
 
 	/**
 	 * Creates new user
+	 *
 	 * @return created user
 	 */
 	User add(User user);
 
 	/**
 	 * Updates existing user
+	 *
 	 * @return updated user or null if user with specified id not found
 	 */
 	@Nullable
@@ -33,6 +36,7 @@ public interface UserDAO {
 
 	/**
 	 * Finds user by Id
+	 *
 	 * @return user or null if user with specified id not found
 	 */
 	@Nullable

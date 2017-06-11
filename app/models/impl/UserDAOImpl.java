@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.bson.types.ObjectId;
+import org.mindrot.jbcrypt.BCrypt;
 
 import models.User;
 import models.UserDAO;
@@ -49,14 +50,14 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
 
 	@Override
 	public User add(final User user) {
-		return get((ObjectId) save(user).getId());
+		return get(saveUser(user));
 	}
 
 	@Nullable
 	@Override
 	public User update(final User user) {
 		if (get(user.getId()) != null) {
-			return find((ObjectId) save(user).getId());
+			return find(saveUser(user));
 		}
 		return null;
 	}
@@ -65,5 +66,10 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
 	@Override
 	public User find(final ObjectId id) {
 		return cleanPassword.apply(get(id));
+	}
+
+	private ObjectId saveUser(final User user) {
+		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+		return (ObjectId) save(user).getId();
 	}
 }
