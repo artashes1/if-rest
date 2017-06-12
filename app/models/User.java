@@ -20,7 +20,7 @@ import play.data.validation.Constraints.Required;
 import utils.ObjectIdSerializer;
 import utils.PasswordValidator.Password;
 
-@Entity("users")
+@Entity(value="users", noClassnameStored=true)
 @Data
 @EqualsAndHashCode(exclude = { "password" })
 public class User {

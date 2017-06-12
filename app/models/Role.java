@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity("roles")
+@Entity(value="roles", noClassnameStored=true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
